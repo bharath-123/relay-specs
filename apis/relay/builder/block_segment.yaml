@@ -1,32 +1,31 @@
 post:
-  operationId: "submitBlock"
-  summary: Submit a new block to the relay.
+  operationId: "submitBlockSegment"
+  summary: Submit a new block segment to the relay. This segment can be a TOB or a ROB. A segment is similar to a full block.
   description: |
-    * Blocks can be submitted as JSON or SSZ, and optionally GZIP encoded. To be
+    * Block segments can be submitted as JSON or SSZ, and optionally GZIP encoded. To be
       clear, there are four options: JSON, JSON+GZIP, SSZ, SSZ+GZIP. If JSON, the
       content type should be `application/json`. If SSZ, the content type should
       be `application/octet-stream`.
-    
-    * The relay will simulate the block to verify properties and proposer
-      payment in the payment transaction from builder to proposer
-      `fee_recipient` at the end of block.
-    
+
+    * Each segment will have a gas limit of 15m gas units. A segment cannot consume more then 15m gas units as it
+      has
+
+    * The relayer will pick up the latest highest ROB/TOB bid(ideally from a seperate builder)
+      if the segment sent is the highest TOB/ROB bid seen by the relayer
+      and sends both the TOB and ROB bids to a local block assembler(specs defined in specs/assembler.md).
+      The local block assembler validates the TOB and ROB bids for the type of transactions included in them.
+      If the validations are successful, the assembler concatenates the TOB and ROB transactions lists and builds
+      a new block from them. This block built is stored in the relayer db and is used by the proposer to propose a block.
+
     * For accountability, builder signature is over the SSZ encoded `message`.
-    
+
     * The `message`, which does not include the transactions, will be made
       public via the data API, allowing anyone to verify the builder signature.
-    
-    * Any new submission by a builder will overwrite a previous one by the same
+
+    * Any new block segment submission by a builder will overwrite a previous one by the same
       `builder_pubkey`, even if it is less profitable.
   tags:
-    - Builder
-  parameters:
-    - name: cancellations
-      in: query
-      required: false
-      description: If set to 1, opt into bid cancellations.
-      schema:
-        $ref: "../../../relay-oapi.yaml#/components/schemas/Uint64"
+    - Builder # not supporting tob and rob bid cancellations for now. Not sure how it would function
   requestBody:
     description: A signed bid with an execution payload.
     required: true
