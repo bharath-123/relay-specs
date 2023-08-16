@@ -1,6 +1,6 @@
 post:
   operationId: "submitBlockSegment"
-  summary: Submit a new block segment to the relay. This segment can be a TOB or a ROB. A segment is similar to a full block.
+  summary: Submit a new block segment to the relay. A segment is similar to a full block.
   description: |
     * Block segments can be submitted as JSON or SSZ, and optionally GZIP encoded. To be
       clear, there are four options: JSON, JSON+GZIP, SSZ, SSZ+GZIP. If JSON, the
@@ -8,7 +8,8 @@ post:
       be `application/octet-stream`.
 
     * Each segment will have a gas limit of 15m gas units. A segment cannot consume more then 15m gas units as it
-      has
+      will be one part of the complete block which will be built. We cannot allow one block segment to consume
+      too much gas.
 
     * The relayer will pick up the latest highest ROB/TOB bid(ideally from a seperate builder)
       if the segment sent is the highest TOB/ROB bid seen by the relayer
