@@ -28,12 +28,12 @@ tags:
 paths:
   /relay/v1/builder/validators:
     $ref: "./apis/relay/builder/validators.yaml"
-  /relay/v1/builder/blocks: # will have to update this one to include 2 apis
+  /relay/v1/builder/blocks:
     $ref: "./apis/relay/builder/blocks.yaml"
   /relay/v1/builders/tob_blocks:
-    $ref: "./apis/relay/builder/block_segment.yaml"
+    $ref: "./apis/relay/builder/tob_segment.yaml"
   /relay/v1/builders/rob_blocks:
-    $ref: "./apis/relay/builder/block_segment.yaml"
+    $ref: "./apis/relay/builder/rob_segment.yaml"
   /relay/v1/data/bidtraces/proposer_payload_delivered:
     $ref: "./apis/relay/data/proposer_payload_delivered.yaml"
   /relay/v1/data/bidtraces/builder_blocks_received:

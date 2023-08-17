@@ -1,18 +1,22 @@
 post:
-  operationId: "submitBlockSegment"
-  summary: Submit a new block segment to the relay. A segment is similar to a full block.
+  operationId: "submitRobBlockSegment"
+  summary: Submit a new ROB block segment to the relay.
   description: |
     * Block segments can be submitted as JSON or SSZ, and optionally GZIP encoded. To be
       clear, there are four options: JSON, JSON+GZIP, SSZ, SSZ+GZIP. If JSON, the
       content type should be `application/json`. If SSZ, the content type should
       be `application/octet-stream`.
 
-    * Each segment will have a gas limit of 15m gas units. A segment cannot consume more then 15m gas units as it
+    * The ROB segment will have a gas limit of 15m gas units. It cannot consume more then 15m gas units as it
       will be one part of the complete block which will be built. We cannot allow one block segment to consume
       too much gas.
 
-    * The relayer will pick up the latest highest ROB/TOB bid(ideally from a seperate builder)
-      if the segment sent is the highest TOB/ROB bid seen by the relayer
+    * If proposer_builder_commitment is FULL_BLOCK, the ROB block segment will be the full block built by the builder.
+      If proposer_builder_commitment is TOB_ROB_BLOCK, the ROB block will be validated(in the assembler) for the type of txs
+      to avoid state interference.
+
+    * In the case of TOB_ROB_BLOCK proposer_builder_commitment, The relayer will pick up the
+      latest highest TOB bid(ideally from a seperate builder) if the segment sent is the highest ROB bid seen by the relayer
       and sends both the TOB and ROB bids to a local block assembler(specs defined in specs/assembler.md).
       The local block assembler validates the TOB and ROB bids for the type of transactions included in them.
       If the validations are successful, the assembler concatenates the TOB and ROB transactions lists and builds
