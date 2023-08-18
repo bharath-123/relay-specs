@@ -12,7 +12,7 @@ post:
 
     * If proposer_builder_commitment is FULL_BLOCK, the TOB block segment will be ignored. The ROB block segment will be
       the complete block.
-      If proposer_builder_commitment is TOB_ROB_BLOCK, the TOB block will be validated(in the assembler) for the type of txs
+      If proposer_builder_commitment is TOB_ROB_SPLIT, the TOB block will be validated(in the assembler) for the type of txs
       to avoid state interference.
 
     * The relayer will pick up the latest highest ROB bid(ideally from a seperate builder)

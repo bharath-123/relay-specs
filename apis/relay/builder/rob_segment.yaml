@@ -12,10 +12,10 @@ post:
       too much gas.
 
     * If proposer_builder_commitment is FULL_BLOCK, the ROB block segment will be the full block built by the builder.
-      If proposer_builder_commitment is TOB_ROB_BLOCK, the ROB block will be validated(in the assembler) for the type of txs
+      If proposer_builder_commitment is TOB_ROB_SPLIT, the ROB block will be validated(in the assembler) for the type of txs
       to avoid state interference.
 
-    * In the case of TOB_ROB_BLOCK proposer_builder_commitment, The relayer will pick up the
+    * In the case of TOB_ROB_SPLIT proposer_builder_commitment, The relayer will pick up the
       latest highest TOB bid(ideally from a seperate builder) if the segment sent is the highest ROB bid seen by the relayer
       and sends both the TOB and ROB bids to a local block assembler(specs defined in specs/assembler.md).
       The local block assembler validates the TOB and ROB bids for the type of transactions included in them.
