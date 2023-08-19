@@ -28,11 +28,11 @@ tags:
 paths:
   /relay/v1/builder/validators:
     $ref: "./apis/relay/builder/validators.yaml"
-  /relay/v1/builder/blocks:
+  /relay/v1/builder/blocks: # for FULL_BLOCK `proposer_builder_commitment`
     $ref: "./apis/relay/builder/blocks.yaml"
-  /relay/v1/builders/tob_blocks:
+  /relay/v1/builders/tob_blocks: # for TOB_ROB_SPLIT `proposer_builder_commitment`
     $ref: "./apis/relay/builder/tob_segment.yaml"
-  /relay/v1/builders/rob_blocks:
+  /relay/v1/builders/rob_blocks: # for TOB_ROB_SPLIT `proposer_builder_commitment`
     $ref: "./apis/relay/builder/rob_segment.yaml"
   /relay/v1/data/bidtraces/proposer_payload_delivered:
     $ref: "./apis/relay/data/proposer_payload_delivered.yaml"
