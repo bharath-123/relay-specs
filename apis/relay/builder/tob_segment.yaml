@@ -1,35 +1,38 @@
 post:
-  operationId: "submitBlock"
-  summary: Submit a new block to the relay.
+  operationId: "submitTobBlockSegment"
+  summary: Submit a TOB block segment to the relay.
   description: |
-    * Blocks can be submitted as JSON or SSZ, and optionally GZIP encoded. To be
+    * Block segments can be submitted as JSON or SSZ, and optionally GZIP encoded. To be
       clear, there are four options: JSON, JSON+GZIP, SSZ, SSZ+GZIP. If JSON, the
       content type should be `application/json`. If SSZ, the content type should
       be `application/octet-stream`.
 
-    * This api receives blocks which are built for validators whose `proposer_commitment` is
-      FULL_BLOCK. If validator's `proposer_commitment` is TOB_ROB_SPLIT, it will ignore the block.
-    
-    * The relay will simulate the block to verify properties and proposer
-      payment in the payment transaction from builder to proposer
-      `fee_recipient` at the end of block.
-    
+    * The TOB segment will have a gas limit of validator_registration.gas_limit / 2. It cannot consume more then gas units as it
+      will be one part of the complete block which will be built. We cannot allow one block segment to consume
+      too much gas.
+
+    * If proposer_commitment is FULL_BLOCK, the TOB block segment will be ignored. The ROB block segment will be
+      the complete block.
+      If proposer_commitment is TOB_ROB_SPLIT, the TOB block will be validated(in the assembler) for the type of txs
+      to avoid state interference.
+
+    * The relayer will pick up the latest highest ROB bid from a seperate builder
+      and sends both the TOB and ROB bids to the payload assembler if the sum of the ROB bid and TOB bid values
+      are the highest seen. (specs defined in specs/assembler.md)
+      The payload assembler validates the TOB and ROB bids for the type of transactions included in them.
+      If the validations are successful, the assembler concatenates the TOB and ROB transactions lists and builds
+      an aggregated payload from them. This aggregated payload is used by the relayer to construct an aggregated bid which
+      will be used by the proposer.
+
     * For accountability, builder signature is over the SSZ encoded `message`.
-    
+
     * The `message`, which does not include the transactions, will be made
       public via the data API, allowing anyone to verify the builder signature.
-    
-    * Any new submission by a builder will overwrite a previous one by the same
+
+    * Any new block segment submission by a builder will overwrite a previous one by the same
       `builder_pubkey`, even if it is less profitable.
   tags:
-    - Builder
-  parameters:
-    - name: cancellations
-      in: query
-      required: false
-      description: If set to 1, opt into bid cancellations.
-      schema:
-        $ref: "../../../relay-oapi.yaml#/components/schemas/Uint64"
+    - Builder # not supporting tob and rob bid cancellations for now. Not sure how it would function
   requestBody:
     description: A signed bid with an execution payload.
     required: true

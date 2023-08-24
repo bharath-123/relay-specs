@@ -2,9 +2,9 @@ get:
   operationId: "getReceivedBids"
   summary: Get builder bid submissions.
   description: |
-    * Returns a list of builder bids without execution payloads.
+    * Returns a list of aggregated builder bids without execution payloads.
     
-    * Only submissions that were successfully verified.
+    * Only submissions that were successfully verfied and built by the local block assembler.
   tags:
     - Data
   parameters:
