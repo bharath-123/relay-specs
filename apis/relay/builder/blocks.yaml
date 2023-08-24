@@ -7,8 +7,8 @@ post:
       content type should be `application/json`. If SSZ, the content type should
       be `application/octet-stream`.
 
-    * This api receives blocks which are built for validators whose `proposer_builder_commitment` is
-      FULL_BLOCK. If validator's `proposer_builder_commitment` is TOB_ROB_SPLIT, it will ignore the block.
+    * This api receives blocks which are built for validators whose `proposer_commitment` is
+      FULL_BLOCK. If validator's `proposer_commitment` is TOB_ROB_SPLIT, it will ignore the block.
     
     * The relay will simulate the block to verify properties and proposer
       payment in the payment transaction from builder to proposer

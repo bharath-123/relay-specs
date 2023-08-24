@@ -11,8 +11,8 @@ post:
       will be one part of the complete block which will be built. We cannot allow one block segment to consume
       too much gas.
 
-    * If proposer_builder_commitment is FULL_BLOCK, the ROB block segment will be ignored.
-      If proposer_builder_commitment is TOB_ROB_SPLIT, the ROB block will be validated(in the assembler) for the type of txs
+    * If proposer_commitment is FULL_BLOCK, the ROB block segment will be ignored.
+      If proposer_commitment is TOB_ROB_SPLIT, the ROB block will be validated(in the assembler) for the type of txs
       to avoid state interference.
 
     * The relayer will pick up the latest highest ROB bid from a seperate builder
